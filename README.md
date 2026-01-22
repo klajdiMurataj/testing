@@ -1,9 +1,9 @@
 this repo contains the base project, taken from last year's OOP course
 
 The members are:
-Klajdi Murataj
-Eden Pajo
-Thomas Kroj
+Klajdi Murataj,
+Eden Pajo,
+Thomas Kroj,
 Nadire Lazri
 
 this is the actual project directory:
