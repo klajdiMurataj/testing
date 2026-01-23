@@ -1,0 +1,33 @@
+For this method we are going to test coverage so therefore :
+a:Statement Coverage:
+we have some cases which prohibit us from accessing full statement coverage and therefore we test the 
+conditions allowing us to preogress further if:
+-either startdate or endDate is null
+-if a date is a date of the past
+-if a date is not in the correct range 
+-if an exception is raised during the try clause
+
+b:branch coverage:
+we have made sure that our method can appear in the
+case where the statement passes and the case where 
+the statement fails,thus ensuring that the conditions are passed and failed
+
+c:condition coverage:
+for the first condition we have :
+startDate=null,endDate=null->true
+startDate=null,endDate!=null->true
+startDate!=null,enddate=null->true
+startDate!=null,endDate!=null->false
+
+for the second condition:
+isNotPastDate->false
+!isnotPastDate->true
+
+for the third condition:
+isValidRange->false
+!isValidRange->true
+
+d:MC/DC:
+in this case we have a complete MC/DC because if we 
+flip the value of start date we get different results and also if we flip the value of end date we get different results so they are both independent 
+furthermore if we flip isNotPastdate or isValidRange we also get different results so since they are binary decisions then theya re independent

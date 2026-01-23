@@ -1,0 +1,78 @@
+a:Statement Coverage:
+-if (!Validators.isNotEmpty(username) || !Validators.isValidPassword(password))
+
+-throw new IllegalArgumentException("Invalid username or password")
+
+-if (!Validators.isValidEmail(email))
+
+-throw new IllegalArgumentException("Invalid email format")
+
+-if (userRepository.existsByUsername(username))
+
+-throw new IllegalArgumentException("Username already exists")
+
+-if (userRepository.existsByEmail(email))
+
+-throw new IllegalArgumentException("Email already registered")
+
+-byte[] salt = HashUtil.generateSalt();
+
+-byte[] hash = HashUtil.hashPassword(password, salt);
+
+-Credential credential = new Credential(username, hash, salt);
+
+-Worker worker = new Worker(...)
+
+-userRepository.add(worker);
+
+-return true;
+
+b:Branch Coverage:
+
+!Validators.isNotEmpty(username) || !Validators.isValidPassword(password) → true/false
+
+-Invalid username →if branch true
+-Invalid password →if branch true (covers second condition)
+-Valid username & password →if branch false
+
+!Validators.isValidEmail(email) → true/false
+-Invalid email →if true
+-Valid email →if false
+
+userRepository.existsByUsername(username) → true/false
+-Username exists →if true
+-Username not exists →if false
+
+userRepository.existsByEmail(email) → true/false
+-Email exists →if true
+-fourth if false
+
+if all conditions fail we get create worker=true,but if one of the conditions succeeds than we get create worker=false
+
+c:Condition Coverage:
+!Validators.isNotEmpty(username) || !Validators.isValidPassword(password) → true/false  
+-it is composed of two methods nested with or so we need only (succeed,fail),(fail,succeed) and (fail,fail) to ensure they are both true and false
+
+!Validators.isValidEmail(email) → true/false
+-validemail->false
+-non valid email->true
+
+userRepository.existsByUsername(username) → true/false
+-exists->true
+-doesn't exist->false
+
+userRepository.existsByEmail(email) → true/false
+-same
+
+d:MC/DC:
+if (!Validators.isNotEmpty(username) || !Validators.isValidPassword(password))
+
+C1 = true, C2 = false → decision = true → exception thrown
+
+C1 = false, C2 = true → decision = true → exception thrown
+
+C1 = false, C2 = false → decision = false → proceed to next line  
+
+-for username and password we have a combination of true/false values for each that leads to a different result ,thus each independently affecting the result
+
+-the other conditions are binary by output so they automatically pass.

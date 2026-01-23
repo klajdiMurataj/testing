@@ -1,0 +1,39 @@
+a:statementTesting:
+zoom out if doesn't make sense
+| Test Case                                        | Covered Statements                                                                                     |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `cancelBooking_bookingNotFound_throwsException`  | `bookingOpt.isEmpty() -> throw IllegalArgumentException`                                               |
+| `cancelBooking_alreadyCancelled_throwsException` | `bookingOpt.get()`, `booking.getStatus() == CANCELLED -> throw`                                        |
+| `cancelBooking_completedBooking_throwsException` | `bookingOpt.get()`, `booking.getStatus() == COMPLETED -> throw`                                        |
+| `cancelBooking_validBooking_returnsTrue`         | `bookingOpt.get()`, `booking.setStatus(CANCELLED)`, `bookingRepository.update(booking)`, `return true` |
+
+b:BranchCoverage:
+| Conditional                             | True Case | False Case | Covered By                                                             |
+| --------------------------------------- | --------- | ---------- | ---------------------------------------------------------------------- |
+| `if (bookingOpt.isEmpty())`             | Yes       | Yes        | True → `bookingNotFound`, False → all others                           |
+
+| `if (booking.getStatus() == CANCELLED)` | Yes       | Yes        | True → `alreadyCancelled`, False → `completedBooking` & `validBooking` |
+
+| `if (booking.getStatus() == COMPLETED)` | Yes       | Yes        | True → `completedBooking`, False → `validBooking`                      |
+
+c:Condition Coverage:
+
+| Condition                          | True Case | False Case | Covered By                                                             |
+| ---------------------------------- | --------- | ---------- | ---------------------------------------------------------------------- |
+| `bookingOpt.isEmpty()`             | True      | False      | True → `bookingNotFound`, False → others                               |
+
+| `booking.getStatus() == CANCELLED` | True      | False      | True → `alreadyCancelled`, False → `completedBooking` & `validBooking` |
+
+| `booking.getStatus() == COMPLETED` | True      | False      | True → `completedBooking`, False → `validBooking`                      |
+
+d:MC/DC:
+
+| Decision                                | Conditions                         | Independent Effect Demonstrated By                                                                                          |
+| --------------------------------------- | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `if (bookingOpt.isEmpty())`             | `bookingOpt.isEmpty()`             | Only one condition; `bookingNotFound` demonstrates True → decision True, `validBooking` demonstrates False → decision False |
+
+| `if (booking.getStatus() == CANCELLED)` | `booking.getStatus() == CANCELLED` | `alreadyCancelled` → True → decision True, `completedBooking` → False → decision False                                      |
+
+| `if (booking.getStatus() == COMPLETED)` | `booking.getStatus() == COMPLETED` | `completedBooking` → True → decision True, `validBooking` → False → decision False                                          |
+
+
