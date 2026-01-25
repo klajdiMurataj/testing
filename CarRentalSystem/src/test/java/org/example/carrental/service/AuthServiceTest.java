@@ -23,14 +23,13 @@ public class AuthServiceTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        // IMPORTANT: repo constructor loads from disk; delete the old/corrupted file first
         Files.deleteIfExists(Path.of("data", "users.dat"));
 
         userRepository = new UserRepository();
-        userRepository.clear(); // make sure it's empty for each test
+        userRepository.clear(); 
 
         authService = new AuthService(userRepository);
-        authService.logout(); // clean session
+        authService.logout(); 
     }
 
     @Test
@@ -43,7 +42,6 @@ public class AuthServiceTest {
 
     @Test
     void login_validCredentials_returnsAccount_andSetsSession() {
-        // Arrange: create a real EndUser with correctly hashed Credential
         String username = "john";
         String password = "pass123";
 
@@ -79,3 +77,4 @@ public class AuthServiceTest {
         return new Credential(username, hash, salt);
     }
 }
+
