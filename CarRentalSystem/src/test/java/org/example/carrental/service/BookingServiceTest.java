@@ -29,10 +29,7 @@ class BookingServiceTest {
 
     @BeforeEach
     void setUp() {
-        // real repository (no Mockito)
         bookingRepository = new BookingRepository();
-
-        // IMPORTANT: Use a unique carId each run so old saved bookings can't overlap
         testCarId = "CAR_TEST_" + System.nanoTime();
 
         PricingService pricingService = new PricingService();
@@ -57,14 +54,11 @@ class BookingServiceTest {
 
     @Test
     void createBooking_createsBookingSuccessfully() {
-        // Account is abstract -> anonymous subclass is fine here
         Account user = new Account(
                 "USER1", "John", "Doe", "john@doe.com", "123",
                 new Credential("john", new byte[]{1}, new byte[]{2}),
                 Role.END_USER
         ) {};
-
-        // IMPORTANT: Use a future range to avoid overlapping with any old test data
         LocalDate start = LocalDate.now().plusDays(1000);
         DateRange range = new DateRange(start, start.plusDays(2));
 
@@ -75,14 +69,11 @@ class BookingServiceTest {
         assertEquals("USER1", booking.getUserId());
         assertNotNull(booking.getInvoiceId());
     }
-
-    // --------- small fakes so we avoid Mockito entirely ----------
-
     static class FakeCarService extends CarService {
         private final Car car;
 
         FakeCarService(Car car) {
-            super(null); // overridden methods, repo never used
+            super(null);
             this.car = car;
         }
 
@@ -114,3 +105,4 @@ class BookingServiceTest {
         }
     }
 }
+
