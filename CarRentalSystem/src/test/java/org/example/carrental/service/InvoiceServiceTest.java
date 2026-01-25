@@ -53,7 +53,6 @@ class InvoiceServiceTest {
         DateRange range = new DateRange(LocalDate.now(), LocalDate.now().plusDays(2));
         PriceBreakdown pb = new PriceBreakdown(300.0, 60.0, 360.0);
 
-        // IMPORTANT: constructor must match YOUR Booking class
         Booking booking = new Booking(
                 "BOOK1",
                 user.getId(),
@@ -74,9 +73,8 @@ class InvoiceServiceTest {
         assertEquals("BOOK1", invoice.getBookingId());
 
         Optional<String> content = invoiceService.getInvoiceContent(invoice.getId());
-        assertTrue(content.isPresent()); // proof that save + read works
-
-        // Cleanup (so tests don’t break later)
+        assertTrue(content.isPresent()); 
         invoiceService.deleteInvoice(invoice.getId());
     }
 }
+
